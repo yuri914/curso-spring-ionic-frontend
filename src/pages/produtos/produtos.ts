@@ -10,21 +10,20 @@ import { ProdutoService } from '../../services/domain/produto.service';
 })
 export class ProdutosPage {
 
-  categoriaId: string;
   items: ProdutoDTO[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams
       , public produtoService: ProdutoService) {
-    this.categoriaId = navParams.get("categoriaId");
   }
 
   ionViewDidLoad() {
-    /*this.produtoService.findByCategoria(this.categoriaId)
+    let categoriaId = this.navParams.get('categoriaId');
+    this.produtoService.findByCategoria(categoriaId)
       .subscribe(response => {
-        this.items = response;
+        this.items = response['content'];
       },
-      error => {});*/
-      this.items = [
+      error => {});
+      /*this.items = [
         {
           id: "1",
           nome: 'Mouse',
@@ -35,7 +34,7 @@ export class ProdutosPage {
           nome: 'Teclado',
           preco: 100.00
         }
-      ]
+      ]*/
     };
 
 }
