@@ -22,4 +22,13 @@ export class ProdutoService {
         let url = `${API_CONFIG.bucketBaseUrl}/prod${id}-small.jpg`
         return this.http.get(url, {responseType : 'blob'});
     }
+
+    getImageFromBucket(id : string) : Observable<any> {
+        let url = `${API_CONFIG.bucketBaseUrl}/prod${id}.jpg`
+        return this.http.get(url, {responseType : 'blob'});
+    }
+
+    findById(id: string) {
+        return this.http.get<ProdutoDTO>(`${API_CONFIG.baseUrl}/produtos/${id}`);
+    }
 }
