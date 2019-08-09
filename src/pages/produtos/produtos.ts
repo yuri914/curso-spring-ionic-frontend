@@ -19,7 +19,7 @@ export class ProdutosPage {
       public loadingCtrl: LoadingController) {
   }
 
-  ionViewDidLoad() {
+  loadData() {
     let categoriaId = this.navParams.get('categoriaId');
     let loader = this.presentLoading();
     this.produtoService.findByCategoria(categoriaId)
@@ -31,28 +31,39 @@ export class ProdutosPage {
       error => {
         loader.dismiss();
       });
-    };
+  }
 
-    loadImageUrls() {
-      for (var i=0; i<this.items.length; i++) {
-        let item = this.items[i];
-        this.produtoService.getSmallImageFromBucket(item.id)
-          .subscribe(response => {
-            item.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${item.id}-small.jpg`;
-          },
-          error => {});
-      }
-    }
-    
-    showDetail(produtoId: string) {
-      this.navCtrl.push('ProdutoDetailPage', {produtoId: produtoId});
-    }
+  ionViewDidLoad() {
+    this.loadData();  
+  };
 
-    presentLoading() {
-      let loader = this.loadingCtrl.create({
-        content: "Aguarde..."
-      });
-      loader.present();
-      return loader;
+  loadImageUrls() {
+    for (var i=0; i<this.items.length; i++) {
+      let item = this.items[i];
+      this.produtoService.getSmallImageFromBucket(item.id)
+        .subscribe(response => {
+          item.imageUrl = `${API_CONFIG.bucketBaseUrl}/prod${item.id}-small.jpg`;
+        },
+        error => {});
     }
+  }
+  
+  showDetail(produtoId: string) {
+    this.navCtrl.push('ProdutoDetailPage', {produtoId: produtoId});
+  }
+
+  presentLoading() {
+    let loader = this.loadingCtrl.create({
+      content: "Aguarde..."
+    });
+    loader.present();
+    return loader;
+  }
+
+  doRefresh(event) {
+    this.loadData();  
+    setTimeout(() => {
+      event.complete();
+    }, 1000);
+  }
 }
